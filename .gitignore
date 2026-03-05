@@ -10,3 +10,6 @@ __pycache__/
 *.egg-info/
 dist/
 build/
+Models/
+ai_history_generator_agent/models
+BookGPT/models
