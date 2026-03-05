@@ -6,6 +6,8 @@ Generate rich, narrated histories for any place with AI — instantly!
 
 **AI History Generator Agent** is a Python-based, Streamlit-powered application that allows users to explore the history of any location in multiple narration styles. Powered by local LLMs or OpenAI, it's designed for interactive storytelling, travel apps, and educational experiences.
 
+![AI History Generator Agent](/docs/Banner/ai_history%20generator.png)
+
 ## ✨ Features
 
 - 🎤 **Multi-mode narration** — Choose between formal, casual, or storytelling modes
