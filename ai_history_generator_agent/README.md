@@ -36,11 +36,10 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 4. Set up your API key (if using OpenAI)
+### 4. Set up your llama model
 
-```bash
-export OPENAI_API_KEY="your_api_key_here"
-```
+Get your own llama based model from huggingface based on your hardware support.
+Keep the file in the model directory
 
 ## 🚀 Running the App
 
