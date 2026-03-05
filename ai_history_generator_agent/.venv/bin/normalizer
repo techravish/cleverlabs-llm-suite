@@ -1,0 +1,8 @@
+#!/bin/sh
+'''exec' "/Users/ravish.rawat/Documents/AI Labs/ai_history_generator_agent/.venv/bin/python" "$0" "$@"
+' '''
+import sys
+from charset_normalizer.cli import cli_detect
+if __name__ == '__main__':
+    sys.argv[0] = sys.argv[0].removesuffix('.exe')
+    sys.exit(cli_detect())
