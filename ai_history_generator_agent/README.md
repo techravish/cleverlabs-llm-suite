@@ -1,45 +1,80 @@
-AI History Generator Agent
+# 🌍 AI History Generator Agent
 
 Generate rich, narrated histories for any place with AI — instantly!
 
-AI History Generator Agent is a Python-based, Streamlit-powered application that allows users to explore the history of any location in multiple narration styles. Powered by local LLMs or OpenAI, it’s designed for interactive storytelling, travel apps, and educational experiences.
+## Overview
 
-Features
+**AI History Generator Agent** is a Python-based, Streamlit-powered application that allows users to explore the history of any location in multiple narration styles. Powered by local LLMs or OpenAI, it's designed for interactive storytelling, travel apps, and educational experiences.
 
-Multi-mode narration: Choose between formal, casual, or storytelling modes.
+## ✨ Features
 
-AI-powered history generation: Get concise, engaging histories of any city, landmark, or location.
+- 🎤 **Multi-mode narration** — Choose between formal, casual, or storytelling modes
+- 🤖 **AI-powered history generation** — Get concise, engaging histories of any city, landmark, or location
+- 🎨 **Streamlit interface** — Simple, interactive web UI for instant results
+- 💻 **Local LLM support** — Run entirely offline with your own models
+- 🔧 **Extendable** — Add more narration modes or integrate with other AI apps in the cleverlabs-llm-suite
 
-Streamlit interface: Simple, interactive web UI for instant results.
+## 📦 Installation
 
-Local LLM support: Run entirely offline with your own models.
+### 1. Clone the repository
 
-Extendable: Add more narration modes or integrate with other AI apps in the cleverlabs-llm-suite.
-
-Installation
-
-Clone the repo:
-
+```bash
 git clone https://github.com/techravish/cleverlabs-llm-suite.git
 cd cleverlabs-llm-suite/ai_history_generator_agent
+```
 
-Create a virtual environment and activate it:
+### 2. Create and activate a virtual environment
 
+```bash
 python3 -m venv .venv
 source .venv/bin/activate
+```
 
-Install dependencies:
+### 3. Install dependencies
 
+```bash
 pip install -r requirements.txt
+```
 
-Add your API key (if using OpenAI):
+### 4. Set up your API key (if using OpenAI)
 
+```bash
 export OPENAI_API_KEY="your_api_key_here"
-Running the App
+```
+
+## 🚀 Running the App
+
+```bash
 streamlit run ai_history_generator_agent.py
+```
 
-Open the provided URL in your browser.
+1. Open the provided URL in your browser
+2. Enter the place you want a history for
+3. Select your preferred narration mode
+4. Click generate and explore!
 
-Enter the place you want a history for.
+## 📋 Usage
 
-Select your preferred narration mode and generate!
+- **Location Input** — Type any city, landmark, or historical site
+- **Narration Mode Selection** — Choose from formal, casual, or storytelling styles
+- **History Generation** — Instant AI-powered historical narratives
+- **Offline Support** — Works with local models for privacy and speed
+
+## 🛠️ Built With
+
+- **Python** — Core language (85.9%)
+- **Streamlit** — Web UI framework
+- **LangChain** — LLM orchestration
+- **Local & OpenAI Models** — Flexible AI backend
+
+## 📝 License
+
+[Add your license information here]
+
+## 🤝 Contributing
+
+We welcome contributions! Feel free to open issues or submit pull requests.
+
+## 📧 Support
+
+For questions or issues, please open an issue on GitHub.
