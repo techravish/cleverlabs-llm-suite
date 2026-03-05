@@ -65,7 +65,7 @@ streamlit run ai_history_generator_agent.py
 - **Python** — Core language (85.9%)
 - **Streamlit** — Web UI framework
 - **LangChain** — LLM orchestration
-- **Local & OpenAI Models** — Flexible AI backend
+- **Local llama model** — Flexible AI backend & No API key needed
 
 ## 📝 License
 
