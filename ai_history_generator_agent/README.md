@@ -69,7 +69,7 @@ streamlit run ai_history_generator_agent.py
 
 ## 📝 License
 
-[Add your license information here]
+- MIT License
 
 ## 🤝 Contributing
 
