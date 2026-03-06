@@ -1,6 +1,6 @@
 # 📘 BookGPT – AI-Powered Book Recommendation App
 
-![BookGPT Working](docs/Banner/Screenshot 2026-03-06 at 10.31.42 PM.png)
+![BookGPT Working](/docs/Banner/ai_book_recommendation_generator.png)
 
 **BookGPT** is a Streamlit-based AI app that recommends books based on a user-provided storyline, mood, theme, and narrative tone. It leverages a local LLM (LLaMA) to generate structured book recommendations, including overviews, reasons to read, reading level, estimated reading time, and fun facts.
 
