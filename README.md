@@ -73,21 +73,28 @@ Explain the causes of World War 1
 
 ---
 
-# 🖼 Example Output
+## 📚 BookGPT
 
-*(Add screenshots here once your app runs)*
+An **AI-powered book recommendation app** that suggests books based on a user-provided storyline, mood, theme, and narrative tone.
 
-```
-screenshots/
-    history_app_demo.png
-```
+### Features
 
-Example markdown:
+- Recommend books dynamically based on story ideas  
+- Tailor recommendations with Mood, Theme, and Tone  
+- Optional Storytelling Mode generates a short story snippet  
+- Structured output including:
+  - Book Name & Author  
+  - Overview  
+  - Why You’ll Like It  
+  - Reading Level & Estimated Time  
+  - Fun Facts  
+- Works with **local LLaMA models** or a fallback mock for testing  
 
-```
-![AI History Generator Demo](screenshots/history_app_demo.png)
-```
+### Example Prompts
 
+A young detective solving a mysterious case in a small town
+A journey of self-discovery and personal growth
+A fast-paced thriller about corporate espionage
 ---
 
 # 🛠 Tech Stack
@@ -150,7 +157,7 @@ Example:
 
 ```bash
 cd ai_history_generator_agent
-streamlit run app.py
+streamlit run {app_name.py}
 ```
 
 The app will open in your browser.
