@@ -1,95 +1,134 @@
 # app.py
+
 import streamlit as st
+import json
+import re
 from services.local_llm_service import generate_history_local
 
 # ====== Streamlit Page Setup ======
 st.set_page_config(page_title="AI Book Recommendation", layout="wide")
-st.title("📘 AI Book Recommendation")
-st.markdown("Describe a storyline or idea, and the app will recommend books that match the narrative.")
+# Centered title
+st.markdown("<h1 style='text-align: center;'>📘 AI Book Recommendation</h1>", unsafe_allow_html=True)
+st.markdown("<h3 style='text-align: center;'>Describe a storyline or idea, and the AI will recommend a book that matches the narrative.</h3>", unsafe_allow_html=True)
 
-# ====== Sidebar / Input Controls ======
-st.sidebar.header("Options")
+# ====== Sidebar ======
+st.sidebar.header("Recommendation Options")
 
-story_line = st.sidebar.text_input("Describe a Story Line or Idea", "")
+story_line = st.sidebar.text_input("Describe a Story Line or Idea")
 
 mood = st.sidebar.selectbox(
     "Select Mood",
-    ["Cozy mystery for a relaxing weekend", "Fast-paced thriller like a movie", "Inspirational personal growth book"]
+    [
+        "Cozy mystery for a relaxing weekend",
+        "Fast-paced thriller like a movie",
+        "Inspirational personal growth book",
+    ],
 )
 
 theme = st.sidebar.selectbox(
     "Theme",
-    ["uplifting", "bittersweet", "Academic","bittersweet","Romance"]
+    ["Uplifting", "Bittersweet", "Academic", "Romance"],
 )
 
 tone = st.sidebar.selectbox(
     "Select Tone",
-    ["Neutral", "Dramatic"]
+    ["Neutral", "Dramatic"],
 )
 
 story_mode = st.sidebar.checkbox("Enable Storytelling Mode", value=False)
 
-generate_button = st.sidebar.button("Get Recommendations")
+generate_button = st.sidebar.button("Get Recommendation")
 
-# ====== Main Output ======
+# ====== Generate Recommendation ======
 if generate_button:
+
     if not story_line.strip():
-        st.warning("Describe a storyline or idea")
-    else:
-        # Construct the prompt dynamically
-        prompt = (
-            f"Provide a Book recommendation which is a {mood.lower()} , theme is {theme.strip()}, naration tone is {tone.lower()}, where the story like is similar to: {story_line.lower()}."
-        )
-        if story_mode:
-            prompt += " Present it is a librarian"
-        
-        # Add instruction to return structured sections
-        prompt += (
-            "\n\nOutput only the following sections, in this order:\n"
-            "0. Name of the book: Provide the name of the book and Author details\n"
-            "1. Overview: At least 2 sentences, no numbering, no bullet points, no metadata, no repetition of prompt.\n"
-            "2. Why you'll like it: List based on mood, theme, tone selected earlier.\n"
-            "3. Reading Level & Time estimation: List notable people with short descriptions.\n"
-            "4. Fun Facts: Interesting tidbits from the book.\n"
-            "5. Do not include the original prompt, steps, or extra conclusions.n"
-        )
-        
-        # Call the local LLaMA model
-        with st.spinner("Getting recommendation..."):
-            try:
-                output_text = generate_history_local(prompt, max_tokens=1600)
-            except Exception as e:
-                st.error(f"Error generating history: {e}")
-                output_text = None
+        st.warning("Please describe a storyline or idea.")
+        st.stop()
 
-        # ====== Parse output into sections ======
-        if output_text:
-            sections = {"Name of the book": "", "Overview": "", "Key Figures": "", "Fun Facts": ""}
-            current_section = "Name of the book"
+    # ====== Prompt Construction ======
+    prompt = f"""
+You are an expert librarian recommending books.
 
-            for line in output_text.splitlines():
-                line = line.strip()
-                if line.startswith("1.") or "Name of the book" in line.lower():
-                    current_section = "Name of the book"
-                    sections[current_section] += line + "\n"
-                elif line.startswith("2.") or "Overview" in line.lower():
-                    current_section = "Overview"
-                elif line.startswith("3.") or "key historical figures" in line.lower():
-                    current_section = "Key Figures"
-                elif line.startswith("4.") or "fun facts" in line.lower():
-                    current_section = "Fun Facts"
-                else:
-                    sections[current_section] += line + "\n"
+Based on the preferences below, recommend EXACTLY ONE book.
 
-            # ====== Display Sections Top-Down ======
-            # st.subheader("Name of the book")
-            st.text_area("Name of the book", sections.get("Name of the book", ""), height=250)
+Mood: {mood.lower()}
+Theme: {theme.lower()}
+Narrative Tone: {tone.lower()}
+Similar Storyline: {story_line.lower()}
 
-            # st.subheader("Overview")
-            st.text_area("Overview", sections.get("Overview", ""), height=200)
+Return ONLY valid JSON using this exact structure:
 
-            st.subheader("Key Historical Figures")
-            st.text_area("Key Figures", sections.get("Key Figures", ""), height=200)
+{{
+  "book_name": "string",
+  "author": "string",
+  "overview": "2-3 sentence description of the book",
+  "why_youll_like_it": [
+    "reason 1",
+    "reason 2",
+    "reason 3"
+  ],
+  "reading_level": "Select a reading level Beginner | Intermediate | Advanced",
+  "estimated_reading_time": "Estimate approximate time to finish the book",
+  "fun_facts": [
+    "fact 1",
+    "fact 2"
+  ]
+}}
 
-            st.subheader("Fun Facts")
-            st.text_area("Fun Facts", sections.get("Fun Facts", ""), height=150)
+Rules:
+- Recommend exactly ONE book.
+- Return ONLY valid JSON.
+- No markdown.
+- No explanations.
+- No trailing commas.
+- Do not include text before or after JSON.
+"""
+
+    # ====== Call LLM and Parse JSON ======
+    with st.spinner("Getting recommendation..."):
+
+        try:
+            response = generate_history_local(prompt, max_tokens=2000)
+
+            # Clean LLM formatting
+            response = response.replace("```json", "").replace("```", "").strip()
+
+            # Remove trailing commas
+            response = re.sub(r",\s*([\]}])", r"\1", response)
+
+            # Extract first JSON object
+            json_match = re.search(r"\{.*?\}", response, re.DOTALL)
+
+            if not json_match:
+                raise ValueError("No valid JSON found in model response")
+
+            json_text = json_match.group()
+
+            data = json.loads(json_text)
+
+        except Exception as e:
+            st.error(f"Error generating recommendation: {e}")
+            st.text(response)
+            st.stop()
+
+    # ====== Display Output ======
+    if data:
+        st.header(data.get("book_name", "Unknown Book"))
+        st.subheader(f"by {data.get('author', 'Unknown Author')}")
+
+        st.write(data.get("overview", ""))
+
+        st.subheader("Why you'll like it")
+        for reason in data.get("why_youll_like_it", []):
+            st.write(f"• {reason}")
+
+        st.subheader("Reading Level")
+        st.write(data.get("reading_level", ""))
+
+        st.subheader("Estimated Reading Time")
+        st.write(data.get("estimated_reading_time", ""))
+
+        st.subheader("Fun Facts")
+        for fact in data.get("fun_facts", []):
+            st.write(f"• {fact}")
