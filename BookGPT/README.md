@@ -70,8 +70,6 @@ Place your LLaMA GGUF model in the models folder:
 models/llama-3.2-1b-instruct-q8_0.gguf
 ```
 
-If the model is not available, the app will use a **mock response for testing**.
-
 ### 5. Run the application
 
 ```
